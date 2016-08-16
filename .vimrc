@@ -18,6 +18,11 @@ filetype plugin indent on    " required
 " ***通用设置***
 " 行号
 set number
+set tabstop=4
+set shiftwidth=4
+" tab换成空格
+set expandtab
+set autoindent
 " <Leader>
 let mapleader=";"
 
