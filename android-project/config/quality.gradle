@@ -1,0 +1,21 @@
+apply plugin: 'checkstyle'
+task checkstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+    configFile new File(rootDir, "/config/checkstyle/checkstyle.xml")
+    // empty classpath
+    classpath = files()
+}
+
+checkstyle {
+    toolVersion = '7.1'
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        html.enabled = true
+    }
+}
