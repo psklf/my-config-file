@@ -15,8 +15,8 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 
-" ***通用设置***
-" 行号
+" ***common setting***
+" line number
 set number
 set tabstop=4
 set shiftwidth=4
@@ -26,6 +26,8 @@ set autoindent
 " <Leader>
 let mapleader=";"
 
+set hlsearch
+set incsearch
 
 " ***Plugin***
 " Tagbar
