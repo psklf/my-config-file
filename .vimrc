@@ -26,8 +26,24 @@ set autoindent
 " <Leader>
 let mapleader=";"
 
+" Color synax and font
+set background=dark
+colorscheme molokai
+
 set hlsearch
 set incsearch
+set cursorline
+set cursorcolumn
+" 开启语法高亮功能
+syntax enable
+" " 允许用指定语法高亮配色方案替换默认方案
+syntax on
+if (has("gui_running"))
+	set guifont=Monospace\ 14
+	set guifontwide=STHeiti\ 14
+	set linespace=6
+	set guioptions-=T "隐藏工具栏
+endif 
 
 " ***Plugin***
 " Tagbar
@@ -59,16 +75,3 @@ let NERDTreeMinimalUI=1
 " " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 
-" Color synax and font
-set background=dark
-colorscheme molokai
-" 开启语法高亮功能
-syntax enable
-" " 允许用指定语法高亮配色方案替换默认方案
-syntax on
-if (has("gui_running"))
-	set guifont=Monospace\ 14
-	set guifontwide=STHeiti\ 14
-	set linespace=6
-	set guioptions-=T "隐藏工具栏
-endif 
