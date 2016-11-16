@@ -18,11 +18,18 @@ filetype plugin indent on    " required
 " ***common setting***
 " line number
 set number
+" width of a tabstop
+" soft just used for backspace
 set tabstop=4
+set softtabstop=4
+" indent = 4
 set shiftwidth=4
-" tab换成空格
+" tab -> space
 set expandtab
 set autoindent
+
+set backspace=indent,eol,start  " Backspace
+
 " <Leader>
 let mapleader=";"
 
@@ -38,13 +45,17 @@ set cursorcolumn
 syntax enable
 " " 允许用指定语法高亮配色方案替换默认方案
 syntax on
+" set line length limit
+" set colorcolumn=100
+
 if (has("gui_running"))
 	set guifont=Monospace\ 14
 	set guifontwide=STHeiti\ 14
 	set linespace=6
 	set guioptions-=T "隐藏工具栏
-endif 
+endif
 
+" ************
 " ***Plugin***
 " Tagbar
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边 
