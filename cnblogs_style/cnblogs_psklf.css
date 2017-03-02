@@ -13,6 +13,7 @@ ul#navList li a {text-decoration: none;}
 #mainContent {float: right;width:78%;}
 #sideBar { width: 20%; border: none; padding: 0; float: left;}
 #sideBar h3 { padding-left: 8px; background-color: #666; }
+div.catListPostCategory ul li {margin:2% 0%}
 #sideBarMain { padding-left: 8px; }
 div.sidebar-block ul li a {text-decoration: none;}
 #sideBarMain ul li a {text-decoration: none;}
