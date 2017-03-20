@@ -2,7 +2,12 @@
 var detail = $("#cb_post_title_url");
 if (detail.text() !== ""){$("div#sideBar").hide();var mainArticleArea = $("div#mainContent");mainArticleArea.width("100%");mainArticleArea.css("margin-left","0");
 $("div.forFlow #comment_form").css("margin-left","40px");
-$("div#cnblogs_post_body").append("<hr/><br/><strong>严正声明：</strong><br/>作者：<a href='http://www.cnblogs.com/psklf/' target='_blank'>psklf</a></br>出处： <a href=''>" + window.location.href + "</a></br>欢迎转载，但未经作者同意，必须保留此段声明；必须在文章中给出原文连接；否则必究法律责任!");
+$("div.post h1.postTitle").after("<div id='mycpright'><strong>严正声明：</strong><br/>作者：<a href='http://www.cnblogs.com/psklf/' target='_blank'>psklf</a></br>出处： <a href=''>" + window.location.href + "</a></br>欢迎转载，但未经作者同意，必须保留此段声明；必须在文章中给出原文连接；否则必究法律责任!</div>");
 }
+window.onload = function() {
+var $feedbackManage = $("div.feedbackManage");
+if ($feedbackManage.length == 0) { $feedbackManage = $("div.feedbackManage"); }
+var $el = $feedbackManage.after("<img class='comment-avatar' src='http://files.cnblogs.com/files/psklf/head.bmp' alt=''>");
+};
 </script>
 <ul id="my_admin"><li id="nav_newpost" class="inline_li"><a id="MyLinks1_NewPostLink" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li><li id="nav_admin" class="inline_li"><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">admin</a></li><ul>

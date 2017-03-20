@@ -44,7 +44,7 @@ div#footer {text-align: center;}
 .comment_actions {float: right;}
 .feedbackItem {border-top: solid;border-width: thin;}
 .feedback_area_title {margin: 1% 0 0 2%;font-weight: bold;}
-.feedbackListSubtitle {text-align: right;height: 70px;}
+.feedbackListSubtitle {height: 70px;}
 .feedbackListSubtitle a {float:left;}
 .feedbackListSubtitle a.layer {margin: 1.5% -7.5% 0 0;}
 .feedbackCon {margin: 0% 0 0% 4%;}
