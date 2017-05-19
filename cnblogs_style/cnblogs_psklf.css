@@ -27,7 +27,7 @@ border-block-end-width: thick;border-block-end-style: solid;
 padding:0% 0% 1% 1%;margin-bottom: 3%;margin-top: 1%;}
 #cnblogs_post_body h3{font-size:1.6em;font-weight:bold;color:#66ccff;
 border-block-end-style: solid;
-padding:0% 0% 0.5% 0.5%;margin-bottom: 1%;margin-top: 1%;}
+padding:0% 0% 0% 0.5%;margin-bottom: 1%;margin-top: 1%;}
 #cnblogs_post_body h4{font-size:1.4em;font-weight:bold;margin-left: 1%;}
 #cnblogs_post_body h5{font-size:1.2em;font-weight:bold}
 #cnblogs_post_body h6{font-size:1.1em;font-weight:bold}
@@ -42,7 +42,7 @@ li.inline_li {display: inline;margin: 0 0.2%;}ul#my_admin {text-align: center;}
 
 div#footer {text-align: center;}
 .post { border-right: none; border-top: none; border-radius: 0px 0px 8px 8px; padding-top: 1px; margin-top: 0.7%;}
-#cnblogs_post_body blockquote {padding: 1.5em 1.8em;margin: 0 0 1.2em;border:none;border-left: 1em solid #c2c2c2;font-size: 0.8em;background: #555555;}
+#cnblogs_post_body blockquote {padding: 1.5em 1.8em;margin: 0 0 1.2em;border:none;border-left: 1em solid #c2c2c2;font-size: 0.9em;background: #555555;}
 .comment_actions {float: right;}
 /* the comment list */
 .feedbackItem {border-top: solid;border-width: thin;}
