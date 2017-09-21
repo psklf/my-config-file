@@ -55,7 +55,9 @@ div#footer {text-align: center;}
 #under_post_news{width:50%;float:left;}
 #under_post_kb{width:50%;float:right;}
 .c_ad_block#ad_c2{margin-top:-5%;float: right;}
-div.entrylistItem {margin: 1% 0;}
+div.entrylistItem{margin: 2% 0 1% 1%;padding-bottom:1%;border-bottom-width: 1px;border-bottom-style: solid;}
+div.entrylistPosttitle{font-size: 1.3em;}
+div.entrylistItemPostDesc{text-align: right;}
 @media screen and (max-width:1366px){
 #body{width:980px;}
 }
