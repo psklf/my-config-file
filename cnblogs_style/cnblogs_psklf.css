@@ -23,13 +23,16 @@ div.day div.postTitle { padding-left: 2%; font-size: 1.5em;border-bottom-color: 
 /* Article page */
 #cnblogs_post_body h1{font-size:2em;font-weight:bold;}
 #cnblogs_post_body h2{font-size:1.8em;font-weight:bold;color:#66ccff;
-border-block-end-width: thick;border-block-end-style: solid;
-padding:0% 0% 1% 1%;margin-bottom: 3%;margin-top: 1%;}
-#cnblogs_post_body h3{font-size:1.6em;font-weight:bold;color:#66ccff;
+border-block-end-width: thick;border-block-end-style: double;
+padding:0% 0% 0% 1%;margin-bottom: 3%;margin-top: 1%;}
+#cnblogs_post_body h3{font-size:1.4em;font-weight:bold;color:#66ccff;
 border-block-end-style: solid;
-padding:0% 0% 0% 0.5%;margin-bottom: 1%;margin-top: 1%;}
-#cnblogs_post_body h4{font-size:1.4em;font-weight:bold;margin-left: 1%;}
-#cnblogs_post_body h5{font-size:1.2em;font-weight:bold}
+padding:0% 0% 0% 1%;margin-bottom: 1%;margin-top: 1%;}
+#cnblogs_post_body h4{font-size:1.4em;font-weight:bold;
+border-block-end-style: solid;
+padding:0% 0% 0% 1%;margin-bottom: 1%;margin-top: 1%;}
+}
+#cnblogs_post_body h5{font-size:1.3em;font-weight:bold}
 #cnblogs_post_body h6{font-size:1.1em;font-weight:bold}
 
 .postTitle a {text-decoration: none; }
