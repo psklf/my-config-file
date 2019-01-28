@@ -35,7 +35,7 @@ let mapleader=";"
 
 " Color synax and font
 set background=dark
-colorscheme molokai
+colorscheme slate
 
 set hlsearch
 set incsearch
@@ -57,6 +57,8 @@ endif
 
 " ************
 " ***Plugin***
+" ************
+
 " Tagbar
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边 
 let tagbar_left=1 
@@ -86,3 +88,5 @@ let NERDTreeMinimalUI=1
 " " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 
+" cscope
+map g<c-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
