@@ -49,8 +49,7 @@ div#footer {text-align: center;}
 /* the comment list */
 .feedbackItem {border-top: solid;border-width: thin;}
 .feedback_area_title {margin: 1% 0 0 2%;font-weight: bold;}
-.feedbackListSubtitle {height: 70px;}
-/* .feedbackListSubtitle a {float:left;} */
+/* .feedbackListSubtitle {height: 70px;} */
 .feedbackListSubtitle a.layer {font-size: 1.3em;}
 .feedbackCon {margin: 0% 0 0% 1%;border-style: inset;}
 /* .comment_date {margin-right: -4%;text-align: right;} */
