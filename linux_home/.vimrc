@@ -16,19 +16,26 @@ filetype plugin indent on    " required
 
 
 " ***common setting***
+"
 " line number
 set number
 " width of a tabstop
 " soft just used for backspace
-set tabstop=4
-set softtabstop=4
-" indent = 4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 " tab -> space
+set smarttab
 set expandtab
-set autoindent
-
 set backspace=indent,eol,start  " Backspace
+
+" indent
+set autoindent
+set smartindent
+set cindent
+
+" show error for mixed tab-space
+let c_space_errors = 1
 
 " <Leader>
 let mapleader=";"
@@ -55,18 +62,28 @@ if (has("gui_running"))
 	set guioptions-=T "隐藏工具栏
 endif
 
+" 保存时自动删除行尾多余的空白字符
+function! RemoveTrailingSpace()
+    if $VIM_HATE_SPACE_ERRORS != '0'
+        normal m`
+        silent! :%s/\s\+$//e
+        normal ``
+    endif
+endfunction
+autocmd BufWritePre * nested call RemoveTrailingSpace()
+
 " ************
 " ***Plugin***
 " ************
 
 " Tagbar
-" 设置 tagbar 子窗口的位置出现在主编辑区的左边 
-let tagbar_left=1 
+" 设置 tagbar 子窗口的位置出现在主编辑区的左边
+let tagbar_left=1
 " 设置显示／隐藏标签列表子窗口的快捷键。速记：identifier list by tag
-nnoremap <Leader>lta :TagbarToggle<CR> 
-" 设置标签子窗口的宽度 
-let tagbar_width=32 
-" tagbar 子窗口中不显示冗余帮助信息 
+nnoremap <Leader>lta :TagbarToggle<CR>
+" 设置标签子窗口的宽度
+let tagbar_width=32
+" tagbar 子窗口中不显示冗余帮助信息
 let g:tagbar_compact=1
 
 " MiniBufferExplorer
