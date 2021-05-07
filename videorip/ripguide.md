@@ -42,12 +42,12 @@ tsMuxeR tsdemuxermain.meta demux
 ```
 
 ```
-ffmpeg -analyzeduration 500M -probesize 2000M -i demux/00003.track_4113.264  -ss 00:05:00 -t 00:00:10 -c copy srcsample1.264
+ffmpeg -analyzeduration 500M -probesize 4096M -i demux/00003.track_4113.264  -ss 00:05:00 -t 00:00:10 -c copy srcsample1.264
 ```
 
 ```
 for f in ./srcsample*.264; do echo "file '$f'" >> mylist.txt; done
-ffmpeg -f concat -i mylist.txt -c copy srcsample.264
+ffmpeg -f concat -safe 0 -i mylist.txt  -auto_convert 1 -c copy srcsample.264
 ```
 
 ### Subtitles:
@@ -64,12 +64,14 @@ mencoder VIDEO_TS/VIDEO_TS.IFO -nosound -ovc copy -o /dev/null -vobsubout subtit
 
 ```
 # demux chapters and subs
-mkvmerge -A -D  ./PLAYLIST/00003.mpls -o chapters.mkv
+# if don't want subs add -S
+mkvmerge -A -D ./PLAYLIST/00003.mpls -o chapters.mkv
 # extract
 mkvextract chapters "chapters.mkv" > chapters.xml
 ```
 
-## 2 Encode video by ffmpeg 264
+## 2 Encode video by ffmpeg/x264
+
 
 My samples
 
@@ -91,6 +93,8 @@ ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB  -codec:v libx264 -pres
 
 **Rip bluray film**
 
+ffmpeg:
+
 ```
 ffmpeg -analyzeduration 500M -probesize 2000M -i demux/00003.track_4113.264  -ss 00:05:00 -t 00:00:20 -codec:v
 
@@ -103,6 +107,12 @@ fmpeg -probesize 4096M -i src.264 -codec:v libx264 \
 "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:crf=23.0:qcomp=0.75:no-mbtree=0:rc-lookahead=250:aq-strength=0.9:min-keyint=24:bframes=16:b-adapt=2:ref=12:deblock=-4" main.264
 ```
 
+x264:
+
+```
+
+```
+
 ### x264 Settings
 
 #### ref
@@ -110,10 +120,10 @@ ref: The max –ref value can be calculated as follows:
 
 For –level 4.1, according to the H.264 standard, the max DPB (Decoded Picture Buffer) size is 12,288 kilobytes. Since each frame is stored in YV12 format, or 1.5 bytes per pixel, a 1920x1088 frame is 1920 x 1088 x 1.5 = 3133440 bytes = 3060 kilobytes. 12,288 / 3060 kilobytes = 4.01568627, so you can use a maximum of 4 reference frames. Remember, round both dimensions up to a mod16 value when doing the math, even if you’re not encoding mod16!
 
-For level 4.1 MaxDpbMbs is 32768 
+For level 4.1 MaxDpbMbs is 32768
 
 Macro Block size is 16x16 so 1920 / 16 = 120, 1080 / 16 = 68.
-For example, for an HDTV picture that is 1,920 samples wide (PicWidthInMbs = 120) and 1,080 samples high (FrameHeightInMbs = 68), a Level 4 decoder has a maximum DPB storage capacity of floor(32768/(120x68)) = 4 frames (or 8 fields). Thus, the value 4 is shown in parentheses in the table above in the right column of the row for Level 4 with the frame size 1920×1080. 
+For example, for an HDTV picture that is 1,920 samples wide (PicWidthInMbs = 120) and 1,080 samples high (FrameHeightInMbs = 68), a Level 4 decoder has a maximum DPB storage capacity of floor(32768/(120x68)) = 4 frames (or 8 fields). Thus, the value 4 is shown in parentheses in the table above in the right column of the row for Level 4 with the frame size 1920×1080.
 
 For level 5 MaxDpbMbs is 110400, same res--> 13.5
 
@@ -126,6 +136,9 @@ ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB -map 0:2 -codec:a ac3 m
 
 # bd audio: 2-channels use flac
 ffmpeg -i demux/00003.track_4352.wav -codec:a flac demux/00003.track_4352.flac
+
+# get DTS core from DTS-MA dca_core bitstream filter:
+ffmpeg -i DTS-HD_MA.dts -bsf:a dca_core -c:a copy TS-Core.dts
 ```
 
 ## 4 REMUX mkvmerge
