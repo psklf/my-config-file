@@ -9,7 +9,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'tomasr/molokai'
+Plugin 'airblade/vim-gitgutter'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -21,9 +21,10 @@ filetype plugin indent on    " required
 set number
 " width of a tabstop
 " soft just used for backspace
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+" indent = 4
+set shiftwidth=4
 " tab -> space
 set smarttab
 set expandtab
@@ -105,5 +106,22 @@ let NERDTreeMinimalUI=1
 " " 删除文件时自动删除文件对应 buffer
 let NERDTreeAutoDeleteBuffer=1
 
+" git gutter
+
+
 " cscope
-map g<c-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
+if has('cscope')
+  set cscopetag cscopeverbose
+
+  if has('quickfix')
+    set cscopequickfix=s-,d-,i-,e-
+  endif
+
+  cnoreabbrev csa cs add
+  cnoreabbrev csf cs find
+
+  command -nargs=0 Cscope cs add $VIMSRC/src/cscope.out $VIMSRC/src
+  map g<c-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+endif
+
