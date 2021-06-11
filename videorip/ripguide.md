@@ -117,9 +117,13 @@ ffmpeg -probesize 4096M -i src.264 -codec:v libx264 \
 ffmpeg -analyzeduration 500M -probesize 2046M -i demux/00001.track_4113.264 -codec:v libx264 -preset veryslow -tune film  -x264-params "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:crf=21.5:aq-mode=2:aq-strength=1.0:qcomp=0.8:no-mbtree=1:bframes=8:b-adapt=2:ref=12" main.264 > ffmpeg.log 2>&1 < /dev/null &
 ```
 
-x264:
+x264 (w/ vspipe)
 
 ```
+vspipe --y4m encodetest.vpy - | x264 --demuxer y4m - \
+--preset slow --tune film \
+--me umh --subme 11 --no-dct-decimate --no-fast-pskip --no-dct-decimate --crf 18 --ref 12 \
+--output sampledst.264
 
 ```
 
