@@ -31,9 +31,11 @@ create tsdemuxer.meta
 ```
 MUXOPT --demux
 S_HDMV/PGS, ./PLAYLIST/00004.mpls, track=4608
-S_HDMV/PGS, ./PLAYLIST/00004.mpls, track=4609
+S_HDMV/PGS, ./PLAYLIST/00004.mpls, lang=eng, track=4609
 A_LPCM, ./PLAYLIST/00004.mpls, track=4352
 V_MPEG4/ISO/AVC, ./PLAYLIST/00004.mpls, track=4113
+
+A_DTS, "./film/Fallen.Angels.1995.Criterion.Collection.1080p.Blu-ray.AVC.DTS-HD.MA.5.1-DiY@HDHome/BDMV/PLAYLIST/00001.mpls", track=4352, down-to-dts
 ```
 
 Run
@@ -98,20 +100,7 @@ ffmpeg:
 ```
 ffmpeg -analyzeduration 500M -probesize 2000M -i demux/00003.track_4113.264  -ss 00:05:00 -t 00:00:20 -codec:v
 
-# Example1
-libx264 -preset slow -tune film  -x264-params "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:qcomp=0.75:crf=21:bframes=16:b-adapt=2:ref=13:deblock=-4" sample.264
-
-# Example2
 libx264 -preset veryslow -tune film -x264-params "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:qcomp=0.75:crf=23:rc-lookahead=250:aq-strength=0.9:min-keyint=24:bframes=16:b-adapt=2:ref=13:deblock=-4"
-
-# Example3
-libx264 -preset slow -tune film  -x264-params \
-"me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:crf=21.5:aq-mode=2:aq-strength=1.0:qcomp=0.8:no-mbtree=1:bframes=8:b-adapt=2:ref=12"
-
-# Example4
-ffmpeg -probesize 4096M -i src.264 -codec:v libx264 \
--preset veryslow -tune film -x264-params \
-"me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:crf=23.0:qcomp=0.75:no-mbtree=0:rc-lookahead=250:aq-strength=0.9:min-keyint=24:bframes=16:b-adapt=2:ref=12:deblock=-4" main.264
 
 # run in background
 ffmpeg -analyzeduration 500M -probesize 2046M -i demux/00001.track_4113.264 -codec:v libx264 -preset veryslow -tune film  -x264-params "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:crf=21.5:aq-mode=2:aq-strength=1.0:qcomp=0.8:no-mbtree=1:bframes=8:b-adapt=2:ref=12" main.264 > ffmpeg.log 2>&1 < /dev/null &
@@ -122,9 +111,10 @@ x264 (w/ vspipe)
 ```
 vspipe --y4m encodetest.vpy - | x264 --demuxer y4m - \
 --preset slow --tune film \
---me umh --subme 11 --no-dct-decimate --no-fast-pskip --no-dct-decimate --crf 18 --ref 12 \
+--me umh --subme 11 --direct auto psy_rd=1.15:0.0 --no-dct-decimate --no-fast-pskip --no-dct-decimate \
+--bframes 7 --b-adapt 2 --deblock -3:-3 --ref 12 \
+--crf 18 --aq-mode 2 --qcomp 0.8 --no-mbtree 1 \
 --output sampledst.264
-
 ```
 
 ### x264 Settings
