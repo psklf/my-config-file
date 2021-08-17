@@ -11,10 +11,11 @@ ffmpeg -analyzeduration 100M -probesize 100M -i Ermo.1994.DVDRip.x264.AC3-psklf.
 
 ```
 
-With image size control
+With image size control or correct DAR
 ```
 ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB  -f image2 -vf "select='eq(n\,20000)+eq(n\,40000)+eq(n\,13613)',scale=1024:576",showinfo -vsync 0 -frames:v 3 source%3d.png
 
+ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB  -f image2 -vf "select='eq(n\,20000)+eq(n\,40000)+eq(n\,13613)',scale=iw*sar:ih",showinfo -vsync 0 -frames:v 3 source%3d.png
 ```
 Analyse video
 
