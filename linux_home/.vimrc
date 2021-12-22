@@ -19,18 +19,19 @@ filetype plugin indent on    " required
 "
 " line number
 set number
+set ruler
+
 " width of a tabstop
 " soft just used for backspace
 set tabstop=4
 set softtabstop=4
-" indent = 4
+" indent
 set shiftwidth=4
 " tab -> space
 set smarttab
 set expandtab
 set backspace=indent,eol,start  " Backspace
 
-" indent
 set autoindent
 set smartindent
 set cindent
@@ -92,6 +93,8 @@ let g:tagbar_compact=1
 " buffer 切换快捷键
 map <C-n> :MBEbn<cr>
 map <C-p> :MBEbp<cr>
+map n<C-p> :MBEbb<cr>
+map n<C-n> :MBEbf<cr>
 
 " NERDTree
 nmap <Leader>nt :NERDTreeToggle<CR>
@@ -107,6 +110,8 @@ let NERDTreeMinimalUI=1
 let NERDTreeAutoDeleteBuffer=1
 
 " git gutter
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
 
 
 " cscope
