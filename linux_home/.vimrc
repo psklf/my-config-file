@@ -124,6 +124,10 @@ if has('cscope')
 
   cnoreabbrev csa cs add
   cnoreabbrev csf cs find
+  cnoreabbrev csk cs kill
+  cnoreabbrev csr cs reset
+  cnoreabbrev css cs show
+  cnoreabbrev csh cs help
 
   command -nargs=0 Cscope cs add $VIMSRC/src/cscope.out $VIMSRC/src
   map g<c-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
