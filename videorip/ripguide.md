@@ -35,7 +35,8 @@ S_HDMV/PGS, ./PLAYLIST/00004.mpls, lang=eng, track=4609
 A_LPCM, ./PLAYLIST/00004.mpls, track=4352
 V_MPEG4/ISO/AVC, ./PLAYLIST/00004.mpls, track=4113
 
-A_DTS, "./film/Fallen.Angels.1995.Criterion.Collection.1080p.Blu-ray.AVC.DTS-HD.MA.5.1-DiY@HDHome/BDMV/PLAYLIST/00001.mpls", track=4352, down-to-dts
+A_DTS, "./BDMV/PLAYLIST/00001.mpls", track=4352, down-to-dts
+A_AC3, "./BDMV/PLAYLIST/00001.mpls", track=4353, down-to-ac3
 ```
 
 Run
@@ -74,25 +75,6 @@ mkvextract chapters "chapters.mkv" > chapters.xml
 
 ## 2 Encode video by ffmpeg/x264
 
-
-My samples
-
-**Rip an old Chinese film**
-
-grain: for old film
-
-```
-ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB -ss 00:10:00 -t 00:02:00 -codec:v libx264 -b_strategy 2 -crf 18 -me_method umh  -x264opts deblock=-4:subme=11:no-fast-pskip=1:no-dct-decimate=1 -tune grain sample.264
-```
-
-**Rip a new film**
-
-```
-ffmpeg -analyzeduration 100M -probesize 100M -i VIDEO_TS/VTS01.VOB -ss 00:13:00 -t 00:02:00 -codec:v libx264 -preset slow  -x264-params "crf=18:me=umh:bframes=5:deblock=-4:subme=11:no-fast-pskip=1:no-dct-decimate=1" sample.264
-
-ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB  -codec:v libx264 -preset veryslow  -x264-params "me=umh:deblock=-3:subme=11:no-fast-pskip=1:no-dct-decimate=1:qcomp=0.65:bframes=5:crf=18" main.264
-```
-
 **Rip bluray film**
 
 ffmpeg:
@@ -106,7 +88,17 @@ libx264 -preset veryslow -tune film -x264-params "me=umh:subme=11:no-fast-pskip=
 ffmpeg -analyzeduration 500M -probesize 2046M -i demux/00001.track_4113.264 -codec:v libx264 -preset veryslow -tune film  -x264-params "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:crf=21.5:aq-mode=2:aq-strength=1.0:qcomp=0.8:no-mbtree=1:bframes=8:b-adapt=2:ref=12" main.264 > ffmpeg.log 2>&1 < /dev/null &
 ```
 
+### x264 Encode
+
 x264 (w/ vspipe)
+
+First, get lossless 264 video file
+
+```
+vspipe  -y clip.vpy - | x264 --demuxer y4m - --qp 0 -o samplesrc.264
+```
+
+Use Vapoursynth to filter and x264 to encode
 
 ```
 vspipe --y4m encodetest.vpy - | x264 --demuxer y4m - \
@@ -118,6 +110,14 @@ vspipe --y4m encodetest.vpy - | x264 --demuxer y4m - \
 ```
 
 ### x264 Settings
+
+#### Qcomp
+
+Qcomp determines your encoding strategy. Given the fact that the default qcomp is 0.6, when I say “Qcomp = 0.8” I am telling my encoder this “Hey, just because a frame is P or B, doesn’t mean that they are to be given too much of a step-motherly treatment”. When I say “Qcomp = 0.4”, P-frames and B-frames deteriorate much more than the I-frame.
+
+Thus - in our example, when Qcomp was 0, the P and B frames were very information-light.
+
+Warning: If you turn mbtree on for encodes which use qcomps less than 0.7, you must be very very sure that the source isn’t grainy or complex or else you will end up destroying your encode. Turn it off with –no-mbtree; since mbtree is enabled by default.
 
 #### ref
 ref: The max –ref value can be calculated as follows:
@@ -162,6 +162,28 @@ Recommendation: Default
 
 2 / 3 choose
 
+### compare screenshot
+
+use [`ffinfo_screen.py`](ffinfo_screen.py) to generate screenshots.
+
+### backup stuff
+My samples
+
+**Rip an old Chinese film**
+
+grain: for old film
+
+```
+ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB -ss 00:10:00 -t 00:02:00 -codec:v libx264 -b_strategy 2 -crf 18 -me_method umh  -x264opts deblock=-4:subme=11:no-fast-pskip=1:no-dct-decimate=1 -tune grain sample.264
+```
+
+**Rip a new film**
+
+```
+ffmpeg -analyzeduration 100M -probesize 100M -i VIDEO_TS/VTS01.VOB -ss 00:13:00 -t 00:02:00 -codec:v libx264 -preset slow  -x264-params "crf=18:me=umh:bframes=5:deblock=-4:subme=11:no-fast-pskip=1:no-dct-decimate=1" sample.264
+
+ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB  -codec:v libx264 -preset veryslow  -x264-params "me=umh:deblock=-3:subme=11:no-fast-pskip=1:no-dct-decimate=1:qcomp=0.65:bframes=5:crf=18" main.264
+```
 
 ## 3 Enocde Audio
 
