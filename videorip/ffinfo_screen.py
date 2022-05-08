@@ -1,11 +1,12 @@
 import sys
 import os
+import random
 import functools
 import vapoursynth as vs
+from random import choice
 
 core = vs.get_core()
 core.std.LoadPlugin(path="/usr/local/lib/libffms2.so")
-
 
 # 生成帧信息，并打入标签
 def FrameInfo(clip, title,
@@ -28,13 +29,25 @@ def open_clip(clip) -> vs.VideoNode:
 
 
 video = core.ffms2.Source(source='samplesrc.264')
-# video = core.std.AssumeFPS(video, fpsnum=video.fps.numerator, fpsden=video.fps.denominator)
-video = FrameInfo(video,"src")
+# video = core.ffms2.Source(source='demux/00000.track_4113.264')
+# video = core.lsmas.LWLibavSource(source='samplesrc.264')
+video = FrameInfo(video,"source")
 
-encode = core.ffms2.Source(source='sampledst.264')
+# clip = core.std.SelectEvery(clip = video[8000:-8000], cycle = 10000, offsets = 80)
+# clip = core.std.AssumeFPS(clip, fpsnum=video.fps.numerator, fpsden=video.fps.denominator)
+# clip = FrameInfo(clip,"source")
+
+# encode = core.ffms2.Source(source='sampledst.264')
+# encode = core.ffms2.Source(source='sampledst.264')
+encode = core.lsmas.LWLibavSource(source='sampledst.264')
 encode = FrameInfo(encode,"encode")
 
-out = core.std.Interleave([video,encode]) # 交叉帧
+# enc_clip = core.std.SelectEvery(clip = encode[8000:-8000], cycle = 10000, offsets = 80)
+# enc_clip = core.std.AssumeFPS(enc_clip, fpsnum=encode.fps.numerator, fpsden=encode.fps.denominator)
+# enc_clip = FrameInfo(enc_clip,"encode")
+
+out = core.std.Interleave([video, encode]) # 交叉帧
+# out = core.std.Interleave([video, enc_clip]) # 交叉帧
 out = open_clip(out)
 
 save_path = "./screenshots"
@@ -43,8 +56,22 @@ if not os.path.exists(save_path):
 
 imwri = core.imwri
 out = imwri.Write(out, 'PNG', os.path.join(save_path, '%d.png'))
-for frame in [700, 1000, 1500, 2000, 2500]:
-    print("Write to {:s} {:d}".format(save_path, frame) )
-    out.get_frame(frame)
-    out.get_frame(frame+1)
+
+print("src num frames ", video.num_frames)
+length = video.num_frames
+num = 5
+frames = []
+for _ in range(num):
+    frames.append(random.choice(range(video.num_frames // 10, video.num_frames // 10 * 9)))
+
+frames = set([x // 100 for x in frames])
+while len(frames) < num:
+    frames.add(choice(range(length // 10, length // 10 * 9)) // 100)
+
+frames = [x * 100 for x in frames]
+
+for frame in frames:
+    print("Write to {:s} {:d}".format(save_path, frame * 2) )
+    out.get_frame(frame * 2)
+    out.get_frame(frame * 2 + 1)
 
