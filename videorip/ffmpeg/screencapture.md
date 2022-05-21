@@ -15,7 +15,11 @@ With image size control or correct DAR
 ```
 ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB  -f image2 -vf "select='eq(n\,20000)+eq(n\,40000)+eq(n\,13613)',scale=1024:576",showinfo -vsync 0 -frames:v 3 source%3d.png
 
+# set frame number
 ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB  -f image2 -vf "select='eq(n\,20000)+eq(n\,40000)+eq(n\,13613)',scale=iw*sar:ih",showinfo -vsync 0 -frames:v 3 source%3d.png
+
+# faster one
+ffmpeg -analyzeduration 600M -probesize 600M -ss 00:10:00 -i in.mkv -f image2 -vf "scale=iw*sar:ih",showinfo -vsync 0 -frames:v 1 source001.png
 ```
 Analyse video
 

@@ -214,6 +214,9 @@ Tips:
 ```
 mkvmerge -o temp.mkv --subtitle-tracks 2 ChungKing.Express.1994.1080p.BluRay.DTS.x264-psklf.mkv # select track 2
 mkvmerge -o output.mkv -s '!3' input.mkv # remove  subtitle track  3
+
+# slice s sample
+ffmpeg -analyzeduration 100M -probesize 100M -i My.Life.as.McDull.2001.1080p.BluRay.DTS5.1.x264-psklf.mkv -ss 00:10:00 -t 00:03:00 -c copy -map 0 sample.mkv
 ```
 
 
