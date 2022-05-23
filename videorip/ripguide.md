@@ -1,7 +1,9 @@
 
 ## 1 Demux
 
-### Merge VOB
+### 1.1 DVD
+
+#### Merge VOB
 ```
 cat VOB_02_*.VOB > out.VOB
 ```
@@ -18,8 +20,19 @@ split the output file
 ffmpeg -analyzeduration 100M -probesize 100M -t 00:17:23 -i pre.VOB -codec:v copy -codec:a copy -codec:s copy -map 0 mainend.VOB
 ffmpeg -ss 01:34:40 -analyzeduration 100M -probesize 100M -i src.VOB -codec:v copy -codec:a copy -codec:s copy  -map 0 crew.VOB
 ```
+####  Subtitles of DVD
 
-### Split and merge bluray
+```
+mencoder <VOBFILE> -nosound -ovc frameno -o /dev/null -vobsuboutindex 0 -sid 0 -vobsubout <SUBFILE>
+
+-vobsubid
+
+mencoder VIDEO_TS/VIDEO_TS.IFO -nosound -ovc copy -o /dev/null -vobsubout subtitles -vobsuboutindex 2 -sid 2
+```
+
+### 1.2 BluRay
+
+#### Split and merge bluray
 
 Get file infomation:
 
@@ -48,45 +61,19 @@ tsMuxeR tsdemuxermain.meta demux
 ffmpeg -analyzeduration 500M -probesize 4096M -i demux/00003.track_4113.264  -ss 00:05:00 -t 00:00:10 -c copy srcsample1.264
 ```
 
-```
-for f in ./srcsample*.264; do echo "file '$f'" >> mylist.txt; done
-ffmpeg -f concat -safe 0 -i mylist.txt  -auto_convert 1 -c copy srcsample.264
-```
-
-### Subtitles:
-
-```
-mencoder <VOBFILE> -nosound -ovc frameno -o /dev/null -vobsuboutindex 0 -sid 0 -vobsubout <SUBFILE>
-
--vobsubid
-
-mencoder VIDEO_TS/VIDEO_TS.IFO -nosound -ovc copy -o /dev/null -vobsubout subtitles -vobsuboutindex 2 -sid 2
-```
-
 ### Chapters
 
 ```
 # demux chapters and subs
 # if don't want subs add -S
-mkvmerge -A -D ./PLAYLIST/00003.mpls -o chapters.mkv
+mkvmerge -A -S -D ./PLAYLIST/00003.mpls -o chapters.mkv
 # extract
 mkvextract chapters "chapters.mkv" > chapters.xml
 ```
 
 ## 2 Encode video by ffmpeg/x264
 
-**Rip bluray film**
-
-ffmpeg:
-
-```
-ffmpeg -analyzeduration 500M -probesize 2000M -i demux/00003.track_4113.264  -ss 00:05:00 -t 00:00:20 -codec:v
-
-libx264 -preset veryslow -tune film -x264-params "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:qcomp=0.75:crf=23:rc-lookahead=250:aq-strength=0.9:min-keyint=24:bframes=16:b-adapt=2:ref=13:deblock=-4"
-
-# run in background
-ffmpeg -analyzeduration 500M -probesize 2046M -i demux/00001.track_4113.264 -codec:v libx264 -preset veryslow -tune film  -x264-params "me=umh:subme=11:no-fast-pskip=1:no-dct-decimate=1:crf=21.5:aq-mode=2:aq-strength=1.0:qcomp=0.8:no-mbtree=1:bframes=8:b-adapt=2:ref=12" main.264 > ffmpeg.log 2>&1 < /dev/null &
-```
+### 2.1 Rip bluray film
 
 ### x264 Encode
 
@@ -109,9 +96,9 @@ vspipe --y4m encodetest.vpy - | x264 --demuxer y4m - \
 --output sampledst.264
 ```
 
-### x264 Settings
+#### x264 Settings
 
-#### Qcomp
+##### Qcomp
 
 Qcomp determines your encoding strategy. Given the fact that the default qcomp is 0.6, when I say “Qcomp = 0.8” I am telling my encoder this “Hey, just because a frame is P or B, doesn’t mean that they are to be given too much of a step-motherly treatment”. When I say “Qcomp = 0.4”, P-frames and B-frames deteriorate much more than the I-frame.
 
@@ -119,7 +106,7 @@ Thus - in our example, when Qcomp was 0, the P and B frames were very informatio
 
 Warning: If you turn mbtree on for encodes which use qcomps less than 0.7, you must be very very sure that the source isn’t grainy or complex or else you will end up destroying your encode. Turn it off with –no-mbtree; since mbtree is enabled by default.
 
-#### ref
+##### ref
 ref: The max –ref value can be calculated as follows:
 
 For –level 4.1, according to the H.264 standard, the max DPB (Decoded Picture Buffer) size is 12,288 kilobytes. Since each frame is stored in YV12 format, or 1.5 bytes per pixel, a 1920x1088 frame is 1920 x 1088 x 1.5 = 3133440 bytes = 3060 kilobytes. 12,288 / 3060 kilobytes = 4.01568627, so you can use a maximum of 4 reference frames. Remember, round both dimensions up to a mod16 value when doing the math, even if you’re not encoding mod16!
@@ -131,7 +118,7 @@ For example, for an HDTV picture that is 1,920 samples wide (PicWidthInMbs = 120
 
 For level 5 MaxDpbMbs is 110400, same res--> 13.5
 
-#### aq
+##### aq
 
 aq-mode
 
@@ -158,11 +145,11 @@ Sets the strength of AQ bias towards low detail ('flat') macroblocks. Negative v
 
 Recommendation: Default
 
-#### psy rd
+##### psy rd
 
 2 / 3 choose
 
-### compare screenshot
+#### compare screenshot
 
 use [`ffinfo_screen.py`](ffinfo_screen.py) to generate screenshots.
 
@@ -209,7 +196,7 @@ mkvmerge -o Time.To.Die.2007.DVDRip.x264.AC3-psklf.mkv --title "Time.To.Die.2007
 mkvmerge -o Rebels.of.the.Neon.God.1080p.BluRay.FLAC.x264-psklf.mkv --title "Rebels.of.the.Neon.God.1080p.BluRay.FLAC.x264-psklf" --compression 0:none --track-name 0:"H.264 / 1080p / 24fps / Advanced Profile 5" 00003rip.track_4113.264 --compression 0:none --language 0:chi --track-name 0:"Chinese / FLAC / 2.0 / 16 bits" demux/00003.track_4352.flac --chapters demux/00003chapters.xml --language 0:chi demux/00003.track_4608.sup --language 0:eng demux/00003.track_4609.sup
 
 ```
-Tips:
+## Tips
 
 ```
 mkvmerge -o temp.mkv --subtitle-tracks 2 ChungKing.Express.1994.1080p.BluRay.DTS.x264-psklf.mkv # select track 2
