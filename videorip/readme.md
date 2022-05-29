@@ -73,8 +73,6 @@ mkvextract chapters "chapters.mkv" > chapters.xml
 
 ## 2 Encode video by ffmpeg/x264
 
-### 2.1 Rip bluray film
-
 ### x264 Encode
 
 x264 (w/ vspipe)
@@ -86,6 +84,15 @@ vspipe  -y clip.vpy - | x264 --demuxer y4m - --qp 0 -o samplesrc.264
 ```
 
 Use Vapoursynth to filter and x264 to encode
+
+Set correct crop size
+
+```
+# crop
+video = core.std.Crop(video, left=0, right=0, top=0, bottom=0)
+```
+
+Final command:
 
 ```
 vspipe --y4m encodetest.vpy - | x264 --demuxer y4m - \
@@ -153,15 +160,22 @@ Recommendation: Default
 
 use [`ffinfo_screen.py`](ffinfo_screen.py) to generate screenshots.
 
-### backup stuff
+#### backup stuff
 My samples
 
 **Rip an old Chinese film**
 
-grain: for old film
+noisy DVD:
+- Crop didn't change sar so use same sar as origin
+- For this grain film using qcomp 1.3
 
 ```
-ffmpeg -analyzeduration 100M -probesize 100M -i main.VOB -ss 00:10:00 -t 00:02:00 -codec:v libx264 -b_strategy 2 -crf 18 -me_method umh  -x264opts deblock=-4:subme=11:no-fast-pskip=1:no-dct-decimate=1 -tune grain sample.264
+vspipe --y4m encodetest.vpy - | x264 --demuxer y4m - \
+         --preset veryslow --tune grain --sar 8:9 --me umh --subme 11 \
+         --direct auto psy_rd=0.9:0.0 --no-dct-decimate --no-fast-pskip --no-dct-decimate \
+         --bframes 7 --b-adapt 2 --deblock -3:-3 --ref 4 --crf 18 \
+         --aq-mode 2 --qcomp 1.3 --no-mbtree 1 --aq-strength 0.7 \
+         -o dst.264 > log.txt 2>&1 &
 ```
 
 **Rip a new film**

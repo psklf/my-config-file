@@ -27,6 +27,8 @@ def open_clip(clip) -> vs.VideoNode:
                                 primaries_in_s='709' if clip.height > 576 else '470bg',
                                 prefer_props=True)
 
+def resize_dar(clip, width, height):
+    return core.resize.Spline36(clip, width, height)
 
 video = core.ffms2.Source(source='samplesrc.264')
 # video = core.ffms2.Source(source='demux/00000.track_4113.264')
@@ -49,6 +51,10 @@ encode = FrameInfo(encode,"encode")
 out = core.std.Interleave([video, encode]) # 交叉帧
 # out = core.std.Interleave([video, enc_clip]) # 交叉帧
 out = open_clip(out)
+
+# resize if needed
+# out = resize_dar(out, 626, 348)
+
 
 save_path = "./screenshots"
 if not os.path.exists(save_path):
