@@ -11,12 +11,3 @@ Install [vundle](https://github.com/VundleVim/Vundle.Vim) first:
 and update all plugins:
 
     :PluginUpdate
-
-## 2
-android-project:
-
-## 3
-the checkstyle gradle config
-
-## 4
-styles and scripts of my  blog in cnblogs
